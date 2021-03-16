@@ -28,7 +28,7 @@ public:
     void minus(int number_line);
     void plus(int number_line);
     void dolar();
-    void p ();
+    void w (string fileName);
     void a();
     void i();
     void c();

@@ -66,9 +66,10 @@ void Editor :: sendLine(string line){
         //cout<<"c"<<endl;
         return;
     }
-    if(!line.compare("%p")){
-        document.p();
-        //cout<<"p"<<endl;
+    if(line[0]=='w'){
+        string temp1=line.substr(2,line.size());
+        document.w(temp1);
+        cout<<temp1<<endl;
         return;
     }
     if(!line.compare("d")){

@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "Document.hpp"
 
 Document::Document(){
@@ -44,10 +45,13 @@ void Document::dolar(){
     currentLine = v.size();
 
 }
-void Document::p(){
+void Document::w(string fileName){
+    ofstream myfile;
+    myfile.open(fileName);
     for(int i =0; i< v.size(); i++){
-        cout << v[i] << endl;
+        myfile << v[i] << endl;
     }
+    myfile.close();
     cout << currentLine << endl;
    // currentLine = v.size();
 
@@ -130,7 +134,7 @@ void Document :: write(string line){
         vector<string>::iterator it;
         it = v.begin();
         v.insert (it+currentLine,line);
-        currentLine++;
+       // currentLine++;
     }
     //cout<<currentLine<<endl;
 }
