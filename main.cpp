@@ -23,7 +23,6 @@ int main(int argc, char* argv[]) {
             while(getline(file, tp)){ //read data from file object and put it into string.
                 vector.push_back(tp);
             }
-            //cout<<vector[2];
             Editor editor(vector);
             editor.loop();
             break;
