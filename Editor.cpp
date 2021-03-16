@@ -137,7 +137,7 @@ void Editor::loop(){
 //
 #include <string>
 #include <iostream>
-#include "Editor.hpp"
+#include "Editor.h"
 #include <regex>
 
 using namespace std;
@@ -158,6 +158,8 @@ void Editor::loop(){
 void Editor :: sendLine(string line){
     regex forNum("[0-9]*");
     regex prAll("%p");
+    regex switchLine(R"(s/\w+/\w+/?)");
+    regex src(R"(/\w+/)");
     regex forPlusMinusNum("[/+-]+[0-9]*");
     static bool isText = false; //הראשון לא יהיה טקסט בטוח
     int len = line.length();
@@ -168,15 +170,40 @@ void Editor :: sendLine(string line){
             isText = false;
         return;
     }*/
-    if(line.at(0) == '/'){
-        document.sleshText(line.substr(1));
+     if(line.at(0) == '/'){
+         string help= line.substr(1,line.size()-2);
+         cout<<help<<endl;
+        document.sleshText(help);
         return;
+    }
+    if(regex_match(line, switchLine)){
+        //cout<<"swc"<<endl;
+        string first=line.substr(2);
+        int find1 =first.find("/");
+        string one= first.substr(0,find1);
+        int find2=first.rfind("/");
+        string two;
+        if(find2==find1) {
+            two= first.substr(find1+1);
+            //cout<<"in4"<<endl;
+        }else{
+            //cout<<first<<endl;
+            two= first.substr((find1+1),find2-find1-1);
+        }
+        document.sw(one,two);
+        //  Doc->Q();
     }
      if(regex_match(line, prAll)){
         //  cout<<"prAll"<<endl;
         //  Doc->Q();
          document.pAll();
     }
+    /* if(regex_match(line, src)){
+         //  cout<<"src"<<endl;
+         //   Doc->Q();
+         string src=line.substr(1);
+         document.search(src);
+     }*/
     if( !line.compare("$")){
         document.dolar();
         return;
@@ -236,20 +263,10 @@ void Editor :: sendLine(string line){
 
 
 
-    if( len > 1 && line.substr(len-1,len) == "j"){
-        int index=0;
-        while(1){
-            if(line.at(index) == ',') break;
-            index++;
-        }
-        string temp1=line.substr(0,index);
-        string temp2=line.substr(index+1,len-1);
-        int numberLine1=stoi(temp1);
-        int numberLine2=stoi(temp2);
-        document.j(numberLine1-1,numberLine2-1);
+    if(!line.compare("j")){
+        document.j();
         cout<<"j"<<endl;
-        cout<<numberLine1<<endl;
-        cout<<numberLine2<<endl;
+
         return;
     }
 

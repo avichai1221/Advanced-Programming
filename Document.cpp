@@ -167,7 +167,7 @@ void Documents::dolar() {
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "Document.hpp"
+#include "Document.h"
 
 Document::Document(){
     currentLine = 0;
@@ -181,7 +181,25 @@ Document::Document(vector<string> s) {
         currentLine++;
     }
 }
+void Document::sw(string s_old, string s_new){
+    int check= v.at(currentLine).find(s_old);
+    if(check!=-1){
+        v.at(currentLine).replace(check,s_old.size(),s_new);
+    }
+    else{
+        cout<<"?"<<endl;
+    }
+}
+void Document::search(string find){
+    for(int i =0; i<=currentLine ; i++)
+    {
+        if(v.at(i).find(find)!=string::npos){
+            currentLine=i;
+        }
+    }
+    cout<<v.at(currentLine)<<endl;
 
+}
 void Document::pAll(){
 
     for(string st: v){
@@ -290,11 +308,22 @@ void Document::d(){
     currentLine--;
 }
 void Document::sleshText(string line){
+    int temp=currentLine;
     for(int i = currentLine; i< v.size(); i++){
+
         size_t found = v[i].find(line);
         if(found !=  string::npos){
             currentLine=i+1;
             cout<< v[i]<< "="<<currentLine<<endl;
+            return;
+        }
+    }
+    num(1);
+    for(int j=0;j<temp;j++){
+        size_t found = v[j].find(line);
+        if(found !=  string::npos){
+            currentLine=j+1;
+            cout<< v[j]<< "="<<currentLine<<endl;
             return;
         }
     }
@@ -317,10 +346,12 @@ void Document::questionMarkText(string line){
 void Document::sOldNew(string oldText, string newText){
     replace(v[currentLine-1], oldText, newText);
 }
-void Document::j(int number_line1 ,int number_line2){
-    string temp=v[number_line1]+ " " + v[number_line2];
-    v[number_line1]=temp;
-    v.erase(v.begin() + number_line2);
+
+
+void Document::j(){
+    string temp=v[currentLine-1]+ v[currentLine];
+    v[currentLine-1]=temp;
+    v.erase(v.begin() + currentLine);
 }
 
 
